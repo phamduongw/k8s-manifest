@@ -1,0 +1,142 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arcion-data-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/arcion/data"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arcion-data-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arcion-config-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/arcion/config"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arcion-config-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arcion-libs-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/arcion/libs"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arcion-libs-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arcion-replicant-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arcion-replicant
+  template:
+    metadata:
+      labels:
+        app: arcion-replicant
+    spec:
+      volumes:
+        - name: arcion-data-storage
+          persistentVolumeClaim:
+            claimName: arcion-data-pvc
+        - name: arcion-config-storage
+          persistentVolumeClaim:
+            claimName: arcion-config-pvc
+        - name: arcion-libs-storage
+          persistentVolumeClaim:
+            claimName: arcion-libs-pvc
+      containers:
+        - name: arcion-replicant
+          image: phamduongw/arcion-replicant:latest
+          env:
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              value: postgres
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /data
+              name: arcion-data-storage
+            - mountPath: /config
+              name: arcion-config-storage
+            - mountPath: /libs
+              name: arcion-libs-storage
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcion-replicant-service
+spec:
+  selector:
+    app: arcion-replicant
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer

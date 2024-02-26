@@ -1,0 +1,18 @@
+{
+ "license": {
+  "uuid": "3b5d3cc9-812d-4b98-9308-be4ff446d0d2",
+  "owner": "Kishibe Rohan",
+  "created": "2023-11-04T00:00Z",
+  "expires": "2024-12-30T00:00Z",
+  "type": "OFFLINE",
+  "edition": "ENTERPRISE",
+  "src": [
+   "ALL"
+  ],
+  "dst": [
+   "ALL"
+  ],
+  "maximumLicensedCores": "999"
+ },
+ "key": "eyJ1dWlkIjoiM2I1ZDNjYzktODEyZC00Yjk4LTkzMDgtYmU0ZmY0NDZkMGQyIiwib3duZXIiOiJLaXNoaWJlIFJvaGFuIiwiY3JlYXRlZCI6IjIwMjMtMTEtMDRUMDA6MDBaIiwiZXhwaXJlcyI6IjIwMjQtMTItMzBUMDA6MDBaIiwidHlwZSI6Ik9GRkxJTkUiLCJlZGl0aW9uIjoiRU5URVJQUklTRSIsInNyYyI6WyJBTEwiXSwiZHN0IjpbIkFMTCJdLCJtYXhpbXVtTGljZW5zZWRDb3JlcyI6Ijk5OSJ9.MGUCMQC4eQMmDi3ybvAa_44AdAbJ2P_uwP4sR5hn5LbBR3h6RhmOAKllMNzDEMNCwud5iggCMB_nAPuvIr9hOz7FB7i1S7GIwBInT4x0wWj5b54VdhwjkhzVE7krLtt4SftYpb9fww=="
+}

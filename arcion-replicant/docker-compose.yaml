@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  postgres-database:
+    container_name: postgres-database
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - /usr/local/arcion/onpremui/pg:/var/lib/postgresql/data
+    image: postgres:14.8-alpine
+    restart: always
+  arcion-replicant:
+    container_name: arcion-replicant
+    ports:
+      - "8080:8080"
+      - "8050:8050"
+    depends_on:
+      - "postgres-database"
+    environment:
+      - DB_HOST=postgres-database
+      - DB_PORT=5432
+      - DB_DATABASE=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - PROMETHEUS_ENABLE=true
+    volumes:
+      - /usr/local/arcion/onpremui/data:/data
+      - /usr/local/arcion/onpremui/config:/config
+      - /usr/local/arcion/onpremui/libs:/libs
+    image: phamduongw/arcion-replicant:latest
+    restart: always
